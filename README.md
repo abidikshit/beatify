@@ -1,7 +1,7 @@
 # Beatify
 
 <p align="center">
-  <img src="./public/favicon.svg" alt="Beatify logo" width="120" height="120" />
+  <img src="./public/logo.svg" alt="Beatify logo" width="300" />
 </p>
 
 Beatify is a sleek web music player built with React that helps you discover and stream free, legal tracks from the Jamendo catalog.  
