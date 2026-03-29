@@ -685,12 +685,7 @@ function MainApp({ clientId, onReset }) {
     { id: "liked", icon: IconHeart, label: "Liked Songs" },
   ];
 
-  // const greeting = () => {
-  //   const h = new Date().getHours();
-  //   if (h < 12) return "Good morning Earthlings 👽";
-  //   if (h < 18) return "Good afternoon Earthlings 👽";
-  //   return "Good evening Earthlings 👽";
-  // };
+  
   const greeting = () => "Mood: Beatify";
 
   // ── Sidebar ──
