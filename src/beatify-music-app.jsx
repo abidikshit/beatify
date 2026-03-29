@@ -48,19 +48,25 @@ const GENRES = [
 ];
 
 const GLOBAL_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #080808;
-    --bg2: #111111;
-    --bg3: #1c1c1c;
+    --bg: #0b0b0b;
+    --bg2: #121212;
+    --bg3: #1a1a1a;
     --bg4: #242424;
-    --accent: #F0A500;
-    --accent-glow: #F0A50033;
-    --text: #F0EFE8;
-    --text2: #787870;
-    --text3: #4a4a44;
-    --border: #1e1e1e;
+    --accent: #1ed760;
+    --accent-glow: #1ed76033;
+    --text: #f5f5f5;
+    --text2: #b3b3b3;
+    --text3: #707070;
+    --border: #2a2a2a;
+    --space-1: 8px;
+    --space-2: 12px;
+    --space-3: 16px;
+    --space-4: 20px;
+    --space-5: 24px;
+    --space-6: 28px;
     --player-h: 90px;
     --sidebar-w: 224px;
   }
@@ -70,8 +76,9 @@ const GLOBAL_STYLES = `
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
-  input { font-family: 'DM Sans', sans-serif; }
-  button { font-family: 'DM Sans', sans-serif; }
+  body, input, button {
+    font-family: "Circular Std", "Circular Spotify Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+  }
   input[type=range] {
     -webkit-appearance: none; appearance: none;
     height: 3px; border-radius: 3px;
@@ -92,14 +99,24 @@ const GLOBAL_STYLES = `
     background: linear-gradient(to right, var(--accent) var(--pct, 0%), var(--bg4) var(--pct, 0%));
   }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes viewSwap { from { opacity: 0; transform: translateY(16px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   @keyframes barDance {
     0%, 100% { height: 4px; } 25% { height: 14px; } 50% { height: 8px; } 75% { height: 16px; }
   }
   .fade-up { animation: fadeUp 0.35s ease forwards; }
+  .view-screen { animation: viewSwap 0.34s cubic-bezier(.22,.8,.2,1) both; }
   .spinning { animation: spin 12s linear infinite; }
   .pulsing { animation: pulse 1.5s ease infinite; }
+  .content-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(14px);
+    background: linear-gradient(180deg, rgba(16,16,16,.84), rgba(16,16,16,.58));
+    border-bottom: 1px solid var(--border);
+  }
   .track-row { transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
   .track-row:hover {
     background: linear-gradient(90deg, #202020, #171717) !important;
@@ -107,7 +124,7 @@ const GLOBAL_STYLES = `
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   }
   .track-row:active { transform: scale(0.995); }
-  .genre-tile { transition: transform 0.2s, box-shadow 0.2s; }
+  .genre-tile { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
   .genre-tile:hover { transform: scale(1.03); box-shadow: 0 12px 26px rgba(0,0,0,0.35); }
   .nav-btn { transition: color 0.15s, background 0.15s; }
   .nav-btn:hover { color: var(--text) !important; background: #1f1f1f !important; }
@@ -261,8 +278,8 @@ function SetupScreen({ onSetup }) {
     <div style={{
       minHeight: "100vh", background: "var(--bg)", display: "flex",
       alignItems: "center", justifyContent: "center",
-      fontFamily: "'DM Sans', sans-serif", padding: 24,
-      backgroundImage: "radial-gradient(ellipse 80% 60% at 50% -20%, #2a1a0020, transparent)"
+      fontFamily: "'Circular Std', 'Circular Spotify Text', 'Inter', 'Helvetica Neue', Arial, sans-serif", padding: 24,
+      backgroundImage: "radial-gradient(ellipse 80% 60% at 50% -20%, #f0a50029, transparent)"
     }}>
       <div style={{ maxWidth: 460, width: "100%" }}>
         {/* Logo */}
@@ -273,8 +290,7 @@ function SetupScreen({ onSetup }) {
           }}>
             <BeatifyLogo size={44} />
             <span style={{
-              fontFamily: "'Cormorant Garamond', serif", fontSize: 40,
-              fontWeight: 600, color: "var(--text)", letterSpacing: "-1px"
+              fontSize: 38, fontWeight: 700, color: "var(--text)", letterSpacing: "-0.04em"
             }}>Beatify</span>
           </div>
           <p style={{ color: "var(--text2)", fontSize: 14, letterSpacing: "0.03em" }}>
@@ -284,9 +300,9 @@ function SetupScreen({ onSetup }) {
 
         {/* Card */}
         <div style={{
-          background: "var(--bg2)", borderRadius: 18, padding: "32px 28px",
+          background: "linear-gradient(180deg, #171717, #111111)", borderRadius: 18, padding: "32px 28px",
           border: "1px solid var(--border)",
-          boxShadow: "0 24px 64px rgba(0,0,0,0.6)"
+          boxShadow: "0 30px 80px rgba(0,0,0,0.65)"
         }}>
           <h2 style={{ color: "var(--text)", fontSize: 19, fontWeight: 500, marginBottom: 6 }}>
             One-time setup · 2 minutes
@@ -453,6 +469,7 @@ function MainApp({ clientId, onReset }) {
   const [view, setView] = useState("home");
   const [tracks, setTracks] = useState([]);
   const [trending, setTrending] = useState([]);
+  const [availableGenres, setAvailableGenres] = useState(GENRES);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -526,6 +543,17 @@ function MainApp({ clientId, onReset }) {
     finally { setLoading(false); }
   }, [clientId]);
 
+  const checkGenreHasTracks = useCallback(async (genreId) => {
+    try {
+      const url = `${JAMENDO_BASE}/tracks/?client_id=${clientId}&format=json&limit=1&audioformat=mp32&tags=${encodeURIComponent(genreId)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      return (data.results || []).length > 0;
+    } catch {
+      return false;
+    }
+  }, [clientId]);
+
   // Init: load trending
   useEffect(() => {
     api("order=popularity_total&tags=pop+rock+electronic+jazz").then((r) => {
@@ -533,6 +561,19 @@ function MainApp({ clientId, onReset }) {
       if (r.length && queue.length === 0) setQueue(r);
     });
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const checks = await Promise.all(
+        GENRES.map(async (genre) => ({ genre, ok: await checkGenreHasTracks(genre.id) }))
+      );
+      if (!active) return;
+      const filtered = checks.filter((x) => x.ok).map((x) => x.genre);
+      setAvailableGenres(filtered.length ? filtered : GENRES);
+    })();
+    return () => { active = false; };
+  }, [checkGenreHasTracks]);
 
   // Search
   useEffect(() => {
@@ -663,8 +704,8 @@ function MainApp({ clientId, onReset }) {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <BeatifyLogo size={34} />
           <span style={{
-            fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 600,
-            color: "var(--text)", letterSpacing: "-0.5px"
+            fontSize: 25, fontWeight: 700,
+            color: "var(--text)", letterSpacing: "-0.03em"
           }}>Beatify</span>
         </div>
       </div>
@@ -691,7 +732,7 @@ function MainApp({ clientId, onReset }) {
         <div style={{ margin: "20px 12px 10px", color: "var(--text3)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase" }}>
           Genres
         </div>
-        {GENRES.map((g) => (
+        {availableGenres.map((g) => (
           <button key={g.id} className="nav-btn" onClick={() => browseGenre(g)} style={{
             display: "flex", alignItems: "center", gap: 12, width: "100%",
             padding: "9px 12px", borderRadius: 8, border: "none",
@@ -699,7 +740,7 @@ function MainApp({ clientId, onReset }) {
             color: selectedGenre?.id === g.id && view === "genre" ? "var(--text)" : "var(--text2)",
             fontSize: 13, cursor: "pointer", textAlign: "left", marginBottom: 1,
           }}>
-            <span style={{ fontSize: 14 }}>{g.emoji}</span> {g.label}
+            {g.label}
           </button>
         ))}
       </nav>
@@ -743,11 +784,12 @@ function MainApp({ clientId, onReset }) {
       }}>
         {/* Left: track info */}
         <div className="player-left" style={{ display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }}>
-          <img src={art} alt="" className={isPlaying ? "spinning" : ""} style={{
+          <img src={art} alt="" className={isPlaying ? "spinning" : ""} onClick={() => setView("nowplaying")} style={{
             width: 48, height: 48, borderRadius: 8, objectFit: "cover",
             background: "var(--bg4)", flexShrink: 0,
             boxShadow: isPlaying ? "0 0 16px var(--accent-glow)" : "none",
-            transition: "box-shadow 0.4s"
+            transition: "box-shadow 0.4s",
+            cursor: "pointer"
           }} />
           <div style={{ overflow: "hidden", minWidth: 0 }}>
             <div style={{ color: "var(--text)", fontSize: 13, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -820,7 +862,7 @@ function MainApp({ clientId, onReset }) {
   return (
     <div style={{
       height: "100vh", display: "flex", flexDirection: "column",
-      fontFamily: "'DM Sans', sans-serif", overflow: "hidden", background: "var(--bg)"
+      fontFamily: "'Circular Std', 'Circular Spotify Text', 'Inter', 'Helvetica Neue', Arial, sans-serif", overflow: "hidden", background: "var(--bg)"
     }}>
       {/* Body */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
@@ -829,15 +871,41 @@ function MainApp({ clientId, onReset }) {
         {/* Content area */}
         <div style={{
           flex: 1, overflow: "auto",
-          background: "linear-gradient(180deg, #1d1a14 0%, var(--bg) 340px)"
+          background: "linear-gradient(180deg, #212121 0%, #121212 320px, var(--bg) 520px)"
         }}>
+          <div className="content-header" style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "12px 22px"
+          }}>
+            <div style={{ color: "var(--text2)", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              Beatify Premium
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <button onClick={() => setView("nowplaying")} style={{
+                background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text2)",
+                borderRadius: 999, padding: "8px 12px", fontSize: 12, cursor: "pointer"
+              }}>
+                Now Playing
+              </button>
+              <div style={{
+                display: "flex", alignItems: "center", gap: 10, borderRadius: 999,
+                border: "1px solid var(--border)", background: "var(--bg3)", padding: "5px 10px 5px 5px"
+              }}>
+                <div style={{
+                  width: 26, height: 26, borderRadius: "50%", background: "var(--accent)", color: "#0b0b0b",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 12
+                }}>U</div>
+                <span style={{ color: "var(--text)", fontSize: 12, fontWeight: 600 }}>You</span>
+              </div>
+            </div>
+          </div>
 
           {/* ── HOME ── */}
           {view === "home" && (
-            <div className="fade-up" style={{ padding: "32px 28px" }}>
+            <div className="view-screen" style={{ padding: "24px 22px" }}>
               <h1 style={{
-                fontFamily: "'Cormorant Garamond', serif", fontSize: 38, fontWeight: 600,
-                color: "var(--text)", letterSpacing: "-0.5px", marginBottom: 6
+                fontSize: 36, fontWeight: 800,
+                color: "var(--text)", letterSpacing: "-0.04em", marginBottom: 6
               }}>
                 {greeting()} ☀
               </h1>
@@ -851,28 +919,27 @@ function MainApp({ clientId, onReset }) {
               </h2>
               <div style={{
                 display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))",
-                gap: 10, marginBottom: 44
+                gap: 10, marginBottom: 28
               }}>
-                {GENRES.map((g) => (
+                {availableGenres.map((g) => (
                   <div key={g.id} className="genre-tile" onClick={() => browseGenre(g)} style={{
                     background: g.color + "18", border: `1px solid ${g.color}30`,
                     borderRadius: 12, padding: "18px 14px", cursor: "pointer",
                     backdropFilter: "blur(8px)"
                   }}>
-                    <div style={{ fontSize: 28, marginBottom: 8 }}>{g.emoji}</div>
-                    <div style={{ color: "var(--text)", fontSize: 13, fontWeight: 500 }}>{g.label}</div>
+                    <div style={{ color: "var(--text)", fontSize: 14, fontWeight: 600 }}>{g.label}</div>
                   </div>
                 ))}
               </div>
 
               {/* Trending */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-                <h2 style={{ color: "var(--text)", fontSize: 16, fontWeight: 500 }}>🔥 Trending Now</h2>
+                <h2 style={{ color: "var(--text)", fontSize: 16, fontWeight: 500 }}>Trending Now</h2>
                 {loading && <span className="pulsing" style={{ color: "var(--text2)", fontSize: 12 }}>Loading…</span>}
               </div>
               {trending.length > 0 && (
                 <div style={{
-                  marginBottom: 40, padding: 10, borderRadius: 12,
+                  marginBottom: 24, padding: 10, borderRadius: 12,
                   border: "1px solid var(--border)", background: "#11111188"
                 }}>
                   <TrackList trackList={trending} />
@@ -883,13 +950,13 @@ function MainApp({ clientId, onReset }) {
 
           {/* ── SEARCH ── */}
           {view === "search" && (
-            <div className="fade-up" style={{ padding: "32px 28px" }}>
+            <div className="view-screen" style={{ padding: "24px 22px" }}>
               <h1 style={{
-                fontFamily: "'Cormorant Garamond', serif", fontSize: 34, fontWeight: 600,
+                fontSize: 34, fontWeight: 800,
                 color: "var(--text)", marginBottom: 22
               }}>Search</h1>
 
-              <div style={{ position: "relative", maxWidth: 540, marginBottom: 32 }}>
+              <div style={{ position: "relative", maxWidth: 540, marginBottom: 22 }}>
                 <span style={{
                   position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)",
                   color: "var(--text2)", pointerEvents: "none", display: "flex"
@@ -911,14 +978,13 @@ function MainApp({ clientId, onReset }) {
                 <>
                   <h3 style={{ color: "var(--text2)", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>Browse Genres</h3>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: 10, maxWidth: 680 }}>
-                    {GENRES.map((g) => (
+                    {availableGenres.map((g) => (
                       <div key={g.id} className="genre-tile" onClick={() => browseGenre(g)} style={{
                         background: g.color + "18", border: `1px solid ${g.color}30`,
                     borderRadius: 12, padding: "18px 14px", cursor: "pointer",
                     backdropFilter: "blur(8px)"
                       }}>
-                        <div style={{ fontSize: 26, marginBottom: 8 }}>{g.emoji}</div>
-                        <div style={{ color: "var(--text)", fontSize: 13, fontWeight: 500 }}>{g.label}</div>
+                        <div style={{ color: "var(--text)", fontSize: 14, fontWeight: 600 }}>{g.label}</div>
                       </div>
                     ))}
                   </div>
@@ -941,22 +1007,24 @@ function MainApp({ clientId, onReset }) {
 
           {/* ── GENRE ── */}
           {view === "genre" && selectedGenre && (
-            <div className="fade-up" style={{ padding: "32px 28px" }}>
+            <div className="view-screen" style={{ padding: "24px 22px" }}>
               <button onClick={() => setView("home")} style={{
                 background: "var(--bg2)", border: "1px solid var(--border)",
                 borderRadius: 8, padding: "8px 16px", color: "var(--text2)",
                 cursor: "pointer", fontSize: 13, marginBottom: 24, display: "flex", alignItems: "center", gap: 6
               }}>← Back</button>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 28 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 20 }}>
                 <div style={{
                   width: 72, height: 72, borderRadius: 16, fontSize: 36,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: selectedGenre.color + "22", border: `1px solid ${selectedGenre.color}44`
-                }}>{selectedGenre.emoji}</div>
+                }}>
+                  <span style={{ color: "var(--text)", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em" }}>GENRE</span>
+                </div>
                 <div>
                   <div style={{ color: "var(--text2)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>Genre</div>
-                  <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 600, color: "var(--text)" }}>
+                  <h1 style={{ fontSize: 36, fontWeight: 800, color: "var(--text)" }}>
                     {selectedGenre.label}
                   </h1>
                 </div>
@@ -981,9 +1049,79 @@ function MainApp({ clientId, onReset }) {
             </div>
           )}
 
+          {/* ── NOW PLAYING ── */}
+          {view === "nowplaying" && currentTrack && (
+            <div className="view-screen" style={{ padding: "24px 22px" }}>
+              <div style={{
+                maxWidth: 960, margin: "0 auto", borderRadius: 18, border: "1px solid var(--border)",
+                background: "linear-gradient(180deg, #1b1b1b, #121212)", padding: 24
+              }}>
+                <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 28 }}>
+                  <img
+                    src={currentTrack.image || currentTrack.album_image || ""}
+                    alt={currentTrack.name}
+                    style={{
+                      width: "100%", maxWidth: 320, aspectRatio: "1 / 1", borderRadius: 14, objectFit: "cover",
+                      background: "var(--bg4)", boxShadow: "0 18px 40px rgba(0,0,0,0.45)"
+                    }}
+                  />
+                  <div>
+                    <div style={{ color: "var(--text2)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                      Now Playing
+                    </div>
+                    <h1 style={{ color: "var(--text)", fontSize: 40, fontWeight: 800, margin: "8px 0 4px", letterSpacing: "-0.04em" }}>
+                      {currentTrack.name}
+                    </h1>
+                    <p style={{ color: "var(--text2)", fontSize: 16 }}>{currentTrack.artist_name}</p>
+
+                    <div style={{ marginTop: 26, display: "flex", alignItems: "center", gap: 16 }}>
+                      <button className="ctrl-btn" onClick={skipPrev} style={{ background: "none", border: "none", color: "var(--text2)", cursor: "pointer", padding: 2 }}>
+                        <IconPrev size={24} color="currentColor" />
+                      </button>
+                      <button className="play-btn" onClick={togglePlay} style={{
+                        width: 56, height: 56, borderRadius: "50%", background: "var(--accent)", border: "none",
+                        cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
+                      }}>
+                        {isPlaying ? <IconPause size={20} color="#000" /> : <IconPlay size={20} color="#000" />}
+                      </button>
+                      <button className="ctrl-btn" onClick={skipNext} style={{ background: "none", border: "none", color: "var(--text2)", cursor: "pointer", padding: 2 }}>
+                        <IconNext size={24} color="currentColor" />
+                      </button>
+                    </div>
+
+                    <div className="progress-wrap" ref={progressRef} style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 18, width: "100%", maxWidth: 520 }}>
+                      <span style={{ color: "var(--text2)", fontSize: 11, width: 34, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
+                        {formatTime(progress)}
+                      </span>
+                      <input
+                        type="range" min={0} max={duration || 100} value={progress} step={0.1}
+                        onChange={seek} style={{ flex: 1 }}
+                      />
+                      <span style={{ color: "var(--text2)", fontSize: 11, width: 34, fontVariantNumeric: "tabular-nums" }}>
+                        {formatTime(duration)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: 22 }}>
+                  <h2 style={{ color: "var(--text)", fontSize: 18, fontWeight: 700, marginBottom: 12 }}>Lyrics</h2>
+                  <div style={{
+                    border: "1px solid var(--border)", borderRadius: 12, padding: "14px 16px",
+                    background: "#101010", color: "var(--text2)", lineHeight: 1.8, fontSize: 14
+                  }}>
+                    <p>"{currentTrack.name}" by {currentTrack.artist_name}</p>
+                    <p>Lyrics are not available from Jamendo for this track in the current integration.</p>
+                    <p>Tip: keep this screen open while listening for a focused now-playing experience.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* ── LIKED SONGS ── */}
           {view === "liked" && (
-            <div className="fade-up" style={{ padding: "32px 28px" }}>
+            <div className="view-screen" style={{ padding: "24px 22px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 28 }}>
                 <div style={{
                   width: 72, height: 72, borderRadius: 16, fontSize: 36,
@@ -992,7 +1130,7 @@ function MainApp({ clientId, onReset }) {
                 }}>♥</div>
                 <div>
                   <div style={{ color: "var(--text2)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>Collection</div>
-                  <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 600, color: "var(--text)" }}>
+                  <h1 style={{ fontSize: 36, fontWeight: 800, color: "var(--text)" }}>
                     Liked Songs
                   </h1>
                   <div style={{ color: "var(--text2)", fontSize: 13, marginTop: 4 }}>{likedIds.size} songs</div>
@@ -1050,7 +1188,7 @@ function MainApp({ clientId, onReset }) {
 // ────────────────────────── Root ──────────────────────────
 export default function Beatify() {
   const [clientId, setClientId] = useState(
-    () => localStorage.getItem("beatify_cid") || "b3855015"
+    () => localStorage.getItem("beatify_cid") || ""
   );
 
   return (
