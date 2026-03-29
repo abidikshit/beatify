@@ -961,7 +961,7 @@ function MainApp({ clientId, onReset }) {
 // ────────────────────────── Root ──────────────────────────
 export default function Beatify() {
   const [clientId, setClientId] = useState(
-    () => localStorage.getItem("beatify_cid") || ""
+    () => localStorage.getItem("beatify_cid") || "b3855015"
   );
 
   return (
