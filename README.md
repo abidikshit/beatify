@@ -7,6 +7,10 @@
 Beatify is a sleek web music player built with React that helps you discover and stream free, legal tracks from the Jamendo catalog.  
 It offers genre browsing, search, liked songs, and a modern player experience in one place.
 
+## Live app
+
+Access Beatify directly here: [https://beatify-music.vercel.app/](https://beatify-music.vercel.app/)
+
 ## What this app is for
 
 - Discover new music across many global and Hindi-focused genres
