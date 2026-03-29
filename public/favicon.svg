@@ -1,16 +1,16 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="100" cy="100" r="100" fill="black"/>
+<svg width="152" height="152" viewBox="0 0 152 152" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="152" height="152" rx="32" fill="#0d0d0d"/>
   <defs>
     <clipPath id="beatify-heart-clip-favicon">
-      <path d="M100 162L91.2 154C59.8 125.5 39 106.7 39 83.7C39 64.9 53.7 50 72.5 50C83.1 50 93.3 55.3 100 63.8C106.7 55.3 116.9 50 127.5 50C146.3 50 161 64.9 161 83.7C161 106.7 140.2 125.5 108.8 154L100 162Z"/>
+      <path d="M76 122L69 115C46 94 28 78 28 59C28 46 38 36 51 36C58 36 65 40 76 50C87 40 94 36 101 36C114 36 124 46 124 59C124 78 106 94 83 115Z"/>
     </clipPath>
   </defs>
   <g clip-path="url(#beatify-heart-clip-favicon)">
-    <rect x="38" y="50" width="16" height="112" rx="8" fill="white"/>
-    <rect x="59" y="50" width="16" height="112" rx="8" fill="white"/>
-    <rect x="80" y="50" width="16" height="112" rx="8" fill="white"/>
-    <rect x="101" y="50" width="16" height="112" rx="8" fill="white"/>
-    <rect x="122" y="50" width="16" height="112" rx="8" fill="white"/>
-    <rect x="143" y="50" width="16" height="112" rx="8" fill="white"/>
+    <rect x="31"  y="36" width="11" height="86" rx="5.5" fill="#00FF88" opacity="0.9"/>
+    <rect x="47"  y="46" width="11" height="76" rx="5.5" fill="#00FF88" opacity="0.75"/>
+    <rect x="63"  y="32" width="11" height="90" rx="5.5" fill="#00FF88"/>
+    <rect x="79"  y="52" width="11" height="70" rx="5.5" fill="#00FF88" opacity="0.6"/>
+    <rect x="95"  y="40" width="11" height="82" rx="5.5" fill="#00FF88" opacity="0.85"/>
+    <rect x="111" y="48" width="11" height="74" rx="5.5" fill="#00FF88" opacity="0.7"/>
   </g>
 </svg>

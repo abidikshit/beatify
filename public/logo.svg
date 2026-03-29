@@ -1,0 +1,16 @@
+<svg width="480" height="160" viewBox="0 0 480 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="152" height="152" rx="32" fill="#0d0d0d"/>
+  <defs>
+    <clipPath id="heart">
+      <path d="M76 122L69 115C46 94 28 78 28 59C28 46 38 36 51 36C58 36 65 40 76 50C87 40 94 36 101 36C114 36 124 46 124 59C124 78 106 94 83 115Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#heart)">
+    <rect x="31" y="36" width="11" height="86" rx="5.5" fill="#00FF88" opacity="0.9"/>
+    <rect x="47" y="46" width="11" height="76" rx="5.5" fill="#00FF88" opacity="0.75"/>
+    <rect x="63" y="32" width="11" height="90" rx="5.5" fill="#00FF88"/>
+    <rect x="79" y="52" width="11" height="70" rx="5.5" fill="#00FF88" opacity="0.6"/>
+    <rect x="95" y="40" width="11" height="82" rx="5.5" fill="#00FF88" opacity="0.85"/>
+    <rect x="111" y="48" width="11" height="74" rx="5.5" fill="#00FF88" opacity="0.7"/>
+  </g>
+</svg>
