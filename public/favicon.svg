@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="100" fill="black"/>
+  <defs>
+    <clipPath id="beatify-heart-clip-favicon">
+      <path d="M100 162L91.2 154C59.8 125.5 39 106.7 39 83.7C39 64.9 53.7 50 72.5 50C83.1 50 93.3 55.3 100 63.8C106.7 55.3 116.9 50 127.5 50C146.3 50 161 64.9 161 83.7C161 106.7 140.2 125.5 108.8 154L100 162Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#beatify-heart-clip-favicon)">
+    <rect x="38" y="50" width="16" height="112" rx="8" fill="white"/>
+    <rect x="59" y="50" width="16" height="112" rx="8" fill="white"/>
+    <rect x="80" y="50" width="16" height="112" rx="8" fill="white"/>
+    <rect x="101" y="50" width="16" height="112" rx="8" fill="white"/>
+    <rect x="122" y="50" width="16" height="112" rx="8" fill="white"/>
+    <rect x="143" y="50" width="16" height="112" rx="8" fill="white"/>
+  </g>
+</svg>
