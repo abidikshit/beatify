@@ -100,13 +100,17 @@ const GLOBAL_STYLES = `
   .fade-up { animation: fadeUp 0.35s ease forwards; }
   .spinning { animation: spin 12s linear infinite; }
   .pulsing { animation: pulse 1.5s ease infinite; }
-  .track-row { transition: background 0.15s, transform 0.1s; }
-  .track-row:hover { background: var(--bg3) !important; }
+  .track-row { transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+  .track-row:hover {
+    background: linear-gradient(90deg, #202020, #171717) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  }
   .track-row:active { transform: scale(0.995); }
   .genre-tile { transition: transform 0.2s, box-shadow 0.2s; }
-  .genre-tile:hover { transform: scale(1.04); }
+  .genre-tile:hover { transform: scale(1.03); box-shadow: 0 12px 26px rgba(0,0,0,0.35); }
   .nav-btn { transition: color 0.15s, background 0.15s; }
-  .nav-btn:hover { color: var(--text) !important; background: var(--bg3) !important; }
+  .nav-btn:hover { color: var(--text) !important; background: #1f1f1f !important; }
   .ctrl-btn { transition: color 0.15s, transform 0.1s; }
   .ctrl-btn:hover { color: var(--text) !important; transform: scale(1.1); }
   .ctrl-btn:active { transform: scale(0.92); }
@@ -161,6 +165,69 @@ function BeatifyLogo({ size = 44 }) {
     </svg>
   );
 }
+
+function Icon({ children, size = 18, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <g stroke={color} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        {children}
+      </g>
+    </svg>
+  );
+}
+
+const IconHome = ({ size = 18, color }) => (
+  <Icon size={size} color={color}>
+    <path d="M3 10.8L12 3l9 7.8" />
+    <path d="M5.5 9.8V21h13V9.8" />
+  </Icon>
+);
+
+const IconSearch = ({ size = 18, color }) => (
+  <Icon size={size} color={color}>
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="M16 16l5 5" />
+  </Icon>
+);
+
+const IconHeart = ({ size = 18, color, filled = false }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? color || "currentColor" : "none"} aria-hidden="true">
+    <path
+      d="M12 20.4l-1.04-.95C7.25 16.1 4.8 13.88 4.8 11.1A4.1 4.1 0 0 1 8.9 7c1.28 0 2.5.58 3.1 1.52A4 4 0 0 1 15.1 7a4.1 4.1 0 0 1 4.1 4.1c0 2.78-2.45 5-6.16 8.35z"
+      stroke={color || "currentColor"}
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const IconPrev = ({ size = 20, color }) => (
+  <Icon size={size} color={color}>
+    <path d="M6 5v14" />
+    <path d="M18 6l-9 6 9 6z" />
+  </Icon>
+);
+
+const IconNext = ({ size = 20, color }) => (
+  <Icon size={size} color={color}>
+    <path d="M18 5v14" />
+    <path d="M6 6l9 6-9 6z" />
+  </Icon>
+);
+
+const IconPlay = ({ size = 20, color }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color || "currentColor"} aria-hidden="true">
+    <path d="M8 5.5a1 1 0 0 1 1.55-.83l9.3 6.5a1 1 0 0 1 0 1.66l-9.3 6.5A1 1 0 0 1 8 18.5z" />
+  </svg>
+);
+
+const IconPause = ({ size = 20, color }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color || "currentColor"} aria-hidden="true">
+    <rect x="7" y="5.5" width="3.8" height="13" rx="1.2" />
+    <rect x="13.2" y="5.5" width="3.8" height="13" rx="1.2" />
+  </svg>
+);
 
 // ────────────────────────── Setup Screen ──────────────────────────
 function SetupScreen({ onSetup }) {
@@ -311,7 +378,8 @@ function TrackRow({ track, index, isActive, isPlaying, onPlay, onLike, liked }) 
         gridTemplateColumns: "28px 50px 1fr 36px 52px",
         alignItems: "center", gap: 12,
         padding: "7px 10px", borderRadius: 8, cursor: "pointer",
-        background: isActive ? "var(--bg3)" : "transparent",
+        background: isActive ? "#1f1f1f" : "#141414",
+        border: `1px solid ${isActive ? "var(--accent-glow)" : "var(--border)"}`,
         userSelect: "none",
       }}
     >
@@ -366,10 +434,10 @@ function TrackRow({ track, index, isActive, isPlaying, onPlay, onLike, liked }) 
         style={{
           background: "none", border: "none", cursor: "pointer",
           color: liked ? "var(--accent)" : "var(--text3)",
-          fontSize: 16, padding: 4, display: "flex"
+          padding: 4, display: "flex"
         }}
       >
-        {liked ? "♥" : "♡"}
+        <IconHeart size={16} color="currentColor" filled={liked} />
       </button>
 
       {/* Duration */}
@@ -406,6 +474,8 @@ function MainApp({ clientId, onReset }) {
   const searchTimer = useRef(null);
   const progressRef = useRef(null);
   const volRef = useRef(null);
+  const queueRef = useRef([]);
+  const skipNextRef = useRef(() => {});
 
   // Init audio
   useEffect(() => {
@@ -424,13 +494,17 @@ function MainApp({ clientId, onReset }) {
       durationchange: () => setDuration(a.duration || 0),
       play: () => setIsPlaying(true),
       pause: () => setIsPlaying(false),
-      ended: () => skipNext(),
-      error: () => skipNext(),
+      ended: () => skipNextRef.current(),
+      error: () => skipNextRef.current(),
     };
 
     Object.entries(handlers).forEach(([e, h]) => a.addEventListener(e, h));
     return () => Object.entries(handlers).forEach(([e, h]) => a.removeEventListener(e, h));
   }, []);
+
+  useEffect(() => {
+    queueRef.current = queue;
+  }, [queue]);
 
   // Volume sync
   useEffect(() => {
@@ -493,8 +567,10 @@ function MainApp({ clientId, onReset }) {
 
   const skipNext = useCallback(() => {
     setQueueIdx((qi) => {
-      const next = qi < queue.length - 1 ? qi + 1 : 0;
-      const t = queue[next];
+      const q = queueRef.current;
+      if (!q.length) return 0;
+      const next = qi < q.length - 1 ? qi + 1 : 0;
+      const t = q[next];
       if (t && audioRef.current) {
         setCurrentTrack(t);
         audioRef.current.src = t.audio;
@@ -502,7 +578,11 @@ function MainApp({ clientId, onReset }) {
       }
       return next;
     });
-  }, [queue]);
+  }, []);
+
+  useEffect(() => {
+    skipNextRef.current = skipNext;
+  }, [skipNext]);
 
   const skipPrev = () => {
     if (!audioRef.current) return;
@@ -559,9 +639,9 @@ function MainApp({ clientId, onReset }) {
 
   // Nav items
   const navItems = [
-    { id: "home", icon: "⌂", label: "Home" },
-    { id: "search", icon: "⌕", label: "Search" },
-    { id: "liked", icon: "♥", label: "Liked Songs" },
+    { id: "home", icon: IconHome, label: "Home" },
+    { id: "search", icon: IconSearch, label: "Search" },
+    { id: "liked", icon: IconHeart, label: "Liked Songs" },
   ];
 
   const greeting = () => {
@@ -600,7 +680,9 @@ function MainApp({ clientId, onReset }) {
             fontSize: 14, fontWeight: view === item.id ? 500 : 400,
             cursor: "pointer", textAlign: "left", marginBottom: 2,
           }}>
-            <span style={{ fontSize: 17, width: 20, textAlign: "center" }}>{item.icon}</span>
+            <span style={{ width: 20, display: "flex", justifyContent: "center" }}>
+              <item.icon size={17} color={view === item.id ? "var(--text)" : "var(--text2)"} />
+            </span>
             {item.label}
           </button>
         ))}
@@ -678,9 +760,9 @@ function MainApp({ clientId, onReset }) {
           <button className="heart-btn" onClick={() => toggleLike(currentTrack.id)} style={{
             background: "none", border: "none", cursor: "pointer",
             color: likedIds.has(currentTrack.id) ? "var(--accent)" : "var(--text3)",
-            fontSize: 18, flexShrink: 0, padding: 4, display: "flex"
+            flexShrink: 0, padding: 4, display: "flex"
           }}>
-            {likedIds.has(currentTrack.id) ? "♥" : "♡"}
+            <IconHeart size={18} color="currentColor" filled={likedIds.has(currentTrack.id)} />
           </button>
         </div>
 
@@ -690,20 +772,20 @@ function MainApp({ clientId, onReset }) {
             <button className="ctrl-btn" onClick={skipPrev} style={{
               background: "none", border: "none", color: "var(--text2)",
               cursor: "pointer", fontSize: 22, padding: 4, lineHeight: 1
-            }}>⏮</button>
+            }}><IconPrev size={22} color="currentColor" /></button>
             <button className="play-btn" onClick={togglePlay} style={{
               width: 40, height: 40, borderRadius: "50%",
               background: "var(--accent)", border: "none",
               cursor: "pointer", display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: isPlaying ? 15 : 17,
-              color: "#000", paddingLeft: isPlaying ? 0 : 2
+              color: "#000"
             }}>
-              {isPlaying ? "⏸" : "▶"}
+              {isPlaying ? <IconPause size={18} color="#000" /> : <IconPlay size={18} color="#000" />}
             </button>
             <button className="ctrl-btn" onClick={skipNext} style={{
               background: "none", border: "none", color: "var(--text2)",
               cursor: "pointer", fontSize: 22, padding: 4, lineHeight: 1
-            }}>⏭</button>
+            }}><IconNext size={22} color="currentColor" /></button>
           </div>
 
           <div className="progress-wrap" ref={progressRef} style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", maxWidth: 380 }}>
@@ -774,7 +856,8 @@ function MainApp({ clientId, onReset }) {
                 {GENRES.map((g) => (
                   <div key={g.id} className="genre-tile" onClick={() => browseGenre(g)} style={{
                     background: g.color + "18", border: `1px solid ${g.color}30`,
-                    borderRadius: 12, padding: "18px 14px", cursor: "pointer"
+                    borderRadius: 12, padding: "18px 14px", cursor: "pointer",
+                    backdropFilter: "blur(8px)"
                   }}>
                     <div style={{ fontSize: 28, marginBottom: 8 }}>{g.emoji}</div>
                     <div style={{ color: "var(--text)", fontSize: 13, fontWeight: 500 }}>{g.label}</div>
@@ -788,7 +871,10 @@ function MainApp({ clientId, onReset }) {
                 {loading && <span className="pulsing" style={{ color: "var(--text2)", fontSize: 12 }}>Loading…</span>}
               </div>
               {trending.length > 0 && (
-                <div style={{ marginBottom: 40 }}>
+                <div style={{
+                  marginBottom: 40, padding: 10, borderRadius: 12,
+                  border: "1px solid var(--border)", background: "#11111188"
+                }}>
                   <TrackList trackList={trending} />
                 </div>
               )}
@@ -806,8 +892,8 @@ function MainApp({ clientId, onReset }) {
               <div style={{ position: "relative", maxWidth: 540, marginBottom: 32 }}>
                 <span style={{
                   position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)",
-                  color: "var(--text2)", fontSize: 20, pointerEvents: "none"
-                }}>⌕</span>
+                  color: "var(--text2)", pointerEvents: "none", display: "flex"
+                }}><IconSearch size={20} color="currentColor" /></span>
                 <input
                   autoFocus value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -828,7 +914,8 @@ function MainApp({ clientId, onReset }) {
                     {GENRES.map((g) => (
                       <div key={g.id} className="genre-tile" onClick={() => browseGenre(g)} style={{
                         background: g.color + "18", border: `1px solid ${g.color}30`,
-                        borderRadius: 12, padding: "18px 14px", cursor: "pointer"
+                    borderRadius: 12, padding: "18px 14px", cursor: "pointer",
+                    backdropFilter: "blur(8px)"
                       }}>
                         <div style={{ fontSize: 26, marginBottom: 8 }}>{g.emoji}</div>
                         <div style={{ color: "var(--text)", fontSize: 13, fontWeight: 500 }}>{g.label}</div>
@@ -886,7 +973,7 @@ function MainApp({ clientId, onReset }) {
                         padding: "10px 24px", color: "#000", fontSize: 14, fontWeight: 600,
                         cursor: "pointer", display: "flex", alignItems: "center", gap: 8
                       }}
-                    >▶ Play All</button>
+                    ><IconPlay size={16} color="#000" /> Play All</button>
                   </div>
                   <TrackList trackList={tracks} />
                 </>
@@ -921,7 +1008,7 @@ function MainApp({ clientId, onReset }) {
                       padding: "10px 24px", color: "#000", fontSize: 14, fontWeight: 600,
                       cursor: "pointer", marginBottom: 20, display: "flex", alignItems: "center", gap: 8
                     }}
-                  >▶ Play All</button>
+                  ><IconPlay size={16} color="#000" /> Play All</button>
                   <TrackList trackList={likedTracks} />
                 </>
               ) : (
@@ -949,7 +1036,9 @@ function MainApp({ clientId, onReset }) {
             cursor: "pointer", display: "flex", flexDirection: "column",
             alignItems: "center", gap: 4, fontSize: 20, padding: "4px 0"
           }}>
-            <span>{item.icon}</span>
+            <span style={{ display: "flex" }}>
+              <item.icon size={19} color="currentColor" />
+            </span>
             <span style={{ fontSize: 10 }}>{item.label}</span>
           </button>
         ))}
