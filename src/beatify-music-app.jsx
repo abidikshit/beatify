@@ -3,48 +3,48 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const JAMENDO_BASE = "https://api.jamendo.com/v3.0";
 
 const GENRES = [
-  { id: "pop", label: "Pop", color: "#E91E63", emoji: "✨" },
-  { id: "rock", label: "Rock", color: "#FF5722", emoji: "🎸" },
-  { id: "jazz", label: "Jazz", color: "#9C27B0", emoji: "🎷" },
-  { id: "electronic", label: "Electronic", color: "#2196F3", emoji: "🎛️" },
-  { id: "classical", label: "Classical", color: "#8D6E63", emoji: "🎻" },
-  { id: "hiphop", label: "Hip Hop", color: "#FF9800", emoji: "🎤" },
-  { id: "ambient", label: "Ambient", color: "#00BCD4", emoji: "🌊" },
-  { id: "folk", label: "Folk", color: "#4CAF50", emoji: "🪕" },
-  { id: "metal", label: "Metal", color: "#607D8B", emoji: "🤘" },
-  { id: "reggae", label: "Reggae", color: "#CDDC39", emoji: "🌴" },
-  { id: "lofi", label: "Lofi", color: "#7E57C2", emoji: "🌙" },
-  { id: "indie_alternative", label: "Indie / Alternative", color: "#26A69A", emoji: "🎶" },
-  { id: "electronic_edm", label: "Electronic / EDM", color: "#29B6F6", emoji: "💿" },
-  { id: "techno", label: "Techno", color: "#3949AB", emoji: "🕺" },
-  { id: "trance", label: "Trance", color: "#AB47BC", emoji: "🌀" },
-  { id: "dance", label: "Dance", color: "#EC407A", emoji: "💃" },
-  { id: "hiphop_rap", label: "Hip Hop / Rap", color: "#FFA726", emoji: "🎙️" },
-  { id: "country", label: "Country", color: "#8D6E63", emoji: "🤠" },
-  { id: "world_international", label: "World / International", color: "#66BB6A", emoji: "🌍" },
-  { id: "hindi", label: "Hindi Songs", color: "#F4511E", emoji: "🇮🇳" },
-  { id: "bollywood_filmi", label: "Bollywood / Filmi", color: "#D81B60", emoji: "🎬" },
-  { id: "indipop", label: "Indi Pop", color: "#8E24AA", emoji: "🎵" },
-  { id: "ghazal", label: "Ghazal", color: "#5E35B1", emoji: "🪔" },
-  { id: "sufi", label: "Sufi", color: "#00897B", emoji: "🕊️" },
-  { id: "qawwali", label: "Qawwali", color: "#43A047", emoji: "🎼" },
-  { id: "hindustani_classical", label: "Hindustani Classical", color: "#6D4C41", emoji: "🪕" },
-  { id: "carnatic_classical", label: "Carnatic Classical", color: "#7CB342", emoji: "🎻" },
-  { id: "devotional_bhajan", label: "Devotional / Bhajan", color: "#FB8C00", emoji: "🙏" },
-  { id: "bhangra", label: "Bhangra", color: "#FDD835", emoji: "🥁" },
-  { id: "punjabi_pop", label: "Punjabi Pop", color: "#FF7043", emoji: "🎉" },
-  { id: "classical_crossover", label: "Classical Crossover", color: "#6A1B9A", emoji: "🎻" },
-  { id: "folk_regional", label: "Folk (Regional)", color: "#558B2F", emoji: "🧿" },
-  { id: "indie_hindi", label: "Indie / Independent Hindi", color: "#26C6DA", emoji: "🎧" },
-  { id: "romantic_ballads", label: "Romantic Ballads", color: "#EF5350", emoji: "💞" },
-  { id: "bollywood_dance", label: "Dance / Bollywood Dance", color: "#EC407A", emoji: "🪩" },
-  { id: "desi_hiphop", label: "Hip Hop / Desi Hip Hop", color: "#FB8C00", emoji: "🔥" },
-  { id: "indian_edm", label: "Electronic / EDM (Hindi)", color: "#1E88E5", emoji: "🎚️" },
-  { id: "fusion", label: "Fusion", color: "#8D6E63", emoji: "🎛️" },
-  { id: "lounge_chillout", label: "Lounge / Chillout", color: "#00ACC1", emoji: "☁️" },
-  { id: "hindi_film_score", label: "Soundtrack / Film Score", color: "#3949AB", emoji: "🎞️" },
-  { id: "remixes_mashups", label: "Remixes & Mashups", color: "#9C27B0", emoji: "🔀" },
-  { id: "kids_hindi", label: "Children's / Kids Hindi Songs", color: "#FBC02D", emoji: "🧒" },
+  { id: "pop", label: "Pop", color: "#E91E63" },
+  { id: "rock", label: "Rock", color: "#FF5722" },
+  { id: "jazz", label: "Jazz", color: "#9C27B0" },
+  { id: "electronic", label: "Electronic", color: "#2196F3" },
+  { id: "classical", label: "Classical", color: "#8D6E63" },
+  { id: "hiphop", label: "Hip Hop", color: "#FF9800" },
+  { id: "ambient", label: "Ambient", color: "#00BCD4" },
+  { id: "folk", label: "Folk", color: "#4CAF50" },
+  { id: "metal", label: "Metal", color: "#607D8B" },
+  { id: "reggae", label: "Reggae", color: "#CDDC39" },
+  { id: "lofi", label: "Lofi", color: "#7E57C2" },
+  { id: "indie_alternative", label: "Indie / Alternative", color: "#26A69A" },
+  { id: "electronic_edm", label: "Electronic / EDM", color: "#29B6F6" },
+  { id: "techno", label: "Techno", color: "#3949AB" },
+  { id: "trance", label: "Trance", color: "#AB47BC" },
+  { id: "dance", label: "Dance", color: "#EC407A" },
+  { id: "hiphop_rap", label: "Hip Hop / Rap", color: "#FFA726" },
+  { id: "country", label: "Country", color: "#8D6E63" },
+  { id: "world_international", label: "World / International", color: "#66BB6A" },
+  { id: "hindi", label: "Hindi Songs", color: "#F4511E" },
+  { id: "bollywood_filmi", label: "Bollywood / Filmi", color: "#D81B60" },
+  { id: "indipop", label: "Indi Pop", color: "#8E24AA" },
+  { id: "ghazal", label: "Ghazal", color: "#5E35B1" },
+  { id: "sufi", label: "Sufi", color: "#00897B" },
+  { id: "qawwali", label: "Qawwali", color: "#43A047" },
+  { id: "hindustani_classical", label: "Hindustani Classical", color: "#6D4C41" },
+  { id: "carnatic_classical", label: "Carnatic Classical", color: "#7CB342" },
+  { id: "devotional_bhajan", label: "Devotional / Bhajan", color: "#FB8C00" },
+  { id: "bhangra", label: "Bhangra", color: "#FDD835" },
+  { id: "punjabi_pop", label: "Punjabi Pop", color: "#FF7043" },
+  { id: "classical_crossover", label: "Classical Crossover", color: "#6A1B9A" },
+  { id: "folk_regional", label: "Folk (Regional)", color: "#558B2F" },
+  { id: "indie_hindi", label: "Indie / Independent Hindi", color: "#26C6DA" },
+  { id: "romantic_ballads", label: "Romantic Ballads", color: "#EF5350" },
+  { id: "bollywood_dance", label: "Dance / Bollywood Dance", color: "#EC407A" },
+  { id: "desi_hiphop", label: "Hip Hop / Desi Hip Hop", color: "#FB8C00" },
+  { id: "indian_edm", label: "Electronic / EDM (Hindi)", color: "#1E88E5" },
+  { id: "fusion", label: "Fusion", color: "#8D6E63" },
+  { id: "lounge_chillout", label: "Lounge / Chillout", color: "#00ACC1" },
+  { id: "hindi_film_score", label: "Soundtrack / Film Score", color: "#3949AB" },
+  { id: "remixes_mashups", label: "Remixes & Mashups", color: "#9C27B0" },
+  { id: "kids_hindi", label: "Children's / Kids Hindi Songs", color: "#FBC02D" },
 ];
 
 const GLOBAL_STYLES = `
@@ -131,6 +131,8 @@ const GLOBAL_STYLES = `
   .ctrl-btn { transition: color 0.15s, transform 0.1s; }
   .ctrl-btn:hover { color: var(--text) !important; transform: scale(1.1); }
   .ctrl-btn:active { transform: scale(0.92); }
+  .mode-btn { transition: color 0.15s, background 0.15s, transform 0.1s; }
+  .mode-btn:hover { transform: scale(1.05); }
   .play-btn { transition: background 0.15s, transform 0.1s, box-shadow 0.2s; }
   .play-btn:hover { transform: scale(1.08); box-shadow: 0 0 20px var(--accent-glow); }
   .play-btn:active { transform: scale(0.95); }
@@ -243,6 +245,38 @@ const IconPause = ({ size = 20, color }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color || "currentColor"} aria-hidden="true">
     <rect x="7" y="5.5" width="3.8" height="13" rx="1.2" />
     <rect x="13.2" y="5.5" width="3.8" height="13" rx="1.2" />
+  </svg>
+);
+
+const IconVolume = ({ size = 18, color, level = "high" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <g stroke={color || "currentColor"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 10h4l5-4v12l-5-4H4z" />
+      {level === "low" && <path d="M16 9.8c1 .9 1 3.5 0 4.4" />}
+      {level === "high" && (
+        <>
+          <path d="M16 8.6c1.7 1.5 1.7 5.3 0 6.8" />
+          <path d="M19 6.8c2.7 2.4 2.7 8 0 10.4" />
+        </>
+      )}
+      {level === "mute" && (
+        <>
+          <path d="M16.2 8.2l4 7.6" />
+          <path d="M20.2 8.2l-4 7.6" />
+        </>
+      )}
+    </g>
+  </svg>
+);
+
+const IconShuffle = ({ size = 18, color }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <g stroke={color || "currentColor"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 4h4v4" />
+      <path d="M4 17h2.8c1.5 0 2.3-.3 3.2-1.4L20 4.5" />
+      <path d="M4 7h2.8c1.6 0 2.4.4 3.4 1.8l5.6 7.8c.8 1.2 1.7 1.4 3.2 1.4H20" />
+      <path d="M16 20h4v-4" />
+    </g>
   </svg>
 );
 
@@ -477,6 +511,7 @@ function MainApp({ clientId, onReset }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
+  const [isShuffle, setIsShuffle] = useState(false);
   const [queue, setQueue] = useState([]);
   const [queueIdx, setQueueIdx] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -610,7 +645,12 @@ function MainApp({ clientId, onReset }) {
     setQueueIdx((qi) => {
       const q = queueRef.current;
       if (!q.length) return 0;
-      const next = qi < q.length - 1 ? qi + 1 : 0;
+      let next = qi < q.length - 1 ? qi + 1 : 0;
+      if (isShuffle && q.length > 1) {
+        do {
+          next = Math.floor(Math.random() * q.length);
+        } while (next === qi);
+      }
       const t = q[next];
       if (t && audioRef.current) {
         setCurrentTrack(t);
@@ -619,7 +659,7 @@ function MainApp({ clientId, onReset }) {
       }
       return next;
     });
-  }, []);
+  }, [isShuffle]);
 
   useEffect(() => {
     skipNextRef.current = skipNext;
@@ -685,7 +725,7 @@ function MainApp({ clientId, onReset }) {
     { id: "liked", icon: IconHeart, label: "Liked Songs" },
   ];
 
-  
+
   const greeting = () => "Mood: Beatify";
 
   // ── Sidebar ──
@@ -746,7 +786,7 @@ function MainApp({ clientId, onReset }) {
         <button onClick={onReset} style={{
           background: "none", border: "none", color: "var(--text3)",
           fontSize: 11, cursor: "pointer", letterSpacing: "0.04em", display: "flex", alignItems: "center", gap: 6
-        }}>⚙ Change API Key</button>
+        }}>Change API Key</button>
       </div>
     </div>
   );
@@ -807,6 +847,25 @@ function MainApp({ clientId, onReset }) {
         {/* Center: controls + scrubber */}
         <div className="player-center" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <button
+              className="mode-btn"
+              onClick={() => setIsShuffle((v) => !v)}
+              style={{
+                background: isShuffle ? "var(--accent-glow)" : "transparent",
+                border: `1px solid ${isShuffle ? "var(--accent)" : "var(--border)"}`,
+                color: isShuffle ? "var(--accent)" : "var(--text2)",
+                cursor: "pointer",
+                width: 30,
+                height: 30,
+                borderRadius: 999,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              title={isShuffle ? "Shuffle on" : "Shuffle off"}
+            >
+              <IconShuffle size={15} color="currentColor" />
+            </button>
             <button className="ctrl-btn" onClick={skipPrev} style={{
               background: "none", border: "none", color: "var(--text2)",
               cursor: "pointer", fontSize: 22, padding: 4, lineHeight: 1
@@ -842,8 +901,12 @@ function MainApp({ clientId, onReset }) {
 
         {/* Right: volume */}
         <div className="player-vol vol-wrap" ref={volRef} style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "flex-end" }}>
-          <span style={{ color: "var(--text2)", fontSize: 15, flexShrink: 0 }}>
-            {volume === 0 ? "🔇" : volume < 0.5 ? "🔉" : "🔊"}
+          <span style={{ color: "var(--text2)", flexShrink: 0, display: "flex" }}>
+            <IconVolume
+              size={18}
+              color="currentColor"
+              level={volume === 0 ? "mute" : volume < 0.5 ? "low" : "high"}
+            />
           </span>
           <input
             type="range" min={0} max={1} value={volume} step={0.01}
@@ -903,7 +966,7 @@ function MainApp({ clientId, onReset }) {
                 fontSize: 36, fontWeight: 800,
                 color: "var(--text)", letterSpacing: "-0.04em", marginBottom: 6
               }}>
-                {greeting()} ☀
+                {greeting()}
               </h1>
               <p style={{ color: "var(--text2)", fontSize: 14, marginBottom: 36 }}>
                 Discover your next favorite track
@@ -1071,6 +1134,25 @@ function MainApp({ clientId, onReset }) {
                     <p style={{ color: "var(--text2)", fontSize: 16 }}>{currentTrack.artist_name}</p>
 
                     <div style={{ marginTop: 26, display: "flex", alignItems: "center", gap: 16 }}>
+                      <button
+                        className="mode-btn"
+                        onClick={() => setIsShuffle((v) => !v)}
+                        style={{
+                          background: isShuffle ? "var(--accent-glow)" : "transparent",
+                          border: `1px solid ${isShuffle ? "var(--accent)" : "var(--border)"}`,
+                          color: isShuffle ? "var(--accent)" : "var(--text2)",
+                          cursor: "pointer",
+                          width: 34,
+                          height: 34,
+                          borderRadius: 999,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                        title={isShuffle ? "Shuffle on" : "Shuffle off"}
+                      >
+                        <IconShuffle size={17} color="currentColor" />
+                      </button>
                       <button className="ctrl-btn" onClick={skipPrev} style={{ background: "none", border: "none", color: "var(--text2)", cursor: "pointer", padding: 2 }}>
                         <IconPrev size={24} color="currentColor" />
                       </button>
@@ -1123,7 +1205,7 @@ function MainApp({ clientId, onReset }) {
                   width: 72, height: 72, borderRadius: 16, fontSize: 36,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: "var(--accent-glow)", border: "1px solid var(--accent)30"
-                }}>♥</div>
+                }}><IconHeart size={22} color="var(--accent)" filled /></div>
                 <div>
                   <div style={{ color: "var(--text2)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>Collection</div>
                   <h1 style={{ fontSize: 36, fontWeight: 800, color: "var(--text)" }}>
